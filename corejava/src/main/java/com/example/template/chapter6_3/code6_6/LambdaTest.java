@@ -21,6 +21,7 @@ package com.example.template.chapter6_3.code6_6;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Timer;
 
@@ -45,7 +46,11 @@ import java.util.Timer;
          Arrays.sort(planets) ;
          System.out.println (Arrays.toString(planets));
          System.out . println ("Sorted by length:");
-         Arrays.sort (planets, (first , second) -> first.length()- second.length()) ;
+//         Arrays.sort (planets, (first , second) -> first.length()- second.length()) ;
+         TestComparator testComparator = new TestComparator();
+         Arrays.sort (planets, testComparator) ;
+         //Arrays.sort (planets) ;
+
          System.out. println(Arrays.toString(planets)) ;
          /*Timer t = new Timer(1000, event ->
             System.out.println ("The time is " + new Date())) ;
@@ -57,3 +62,11 @@ import java.util.Timer;
          JOptionPane.showMessageDialog (null , "Quit program?");
          System.exit (0);
  }}
+ class TestComparator implements Comparator<String> {
+     @Override
+     public int compare(String first, String second) {
+         System.out.println("called");
+         int i = first.length() - second.length();
+         return i;
+     }
+ }
