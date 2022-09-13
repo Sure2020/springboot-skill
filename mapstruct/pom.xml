@@ -39,6 +39,11 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+		<!--<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -61,7 +66,7 @@
 			</plugin>
 		</plugins>
 	</build>-->
-	<build>
+	<!--<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -76,13 +81,13 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
-						<!-- Lombok 注解处理器 -->
+						&lt;!&ndash; Lombok 注解处理器 &ndash;&gt;
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${lombok.version}</version>
 						</path>
-						<!-- MapStruct 和 Lombok 注解绑定处理器 -->
+						&lt;!&ndash; MapStruct 和 Lombok 注解绑定处理器 &ndash;&gt;
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
@@ -92,6 +97,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</build>-->
 
 </project>
