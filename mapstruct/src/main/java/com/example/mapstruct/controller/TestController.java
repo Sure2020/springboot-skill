@@ -16,12 +16,18 @@
  * --------------------------------------------------------------------
  */
 
-package com.example.mapstruct;
+package com.example.mapstruct.controller;
 
+import com.example.mapstruct.dto.Device;
+import com.example.mapstruct.dto.DeviceDTO;
+import com.example.mapstruct.dto.DeviceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: com.example.mapstruct
@@ -31,15 +37,19 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 public class TestController {
-    @Autowired DeviceMapper deviceMapper;
+    @Autowired
+    DeviceMapper deviceMapper;
     @GetMapping("/test")
     public Object test () {
-        Device device = new Device();
-        device.setId("a");
-        device.setName("testdev");
-        device.setType("water");
-        DeviceDTO deviceDTO = new DeviceDTO();
-        deviceDTO = deviceMapper.deviceToDeviceDto(device);
-        return deviceDTO.toString();
+        Device device1 = new Device("a", "dev1", "water");
+        Device device2 = new Device("b", "dev2", "water");
+        List<Device> devices = new ArrayList<>();
+        devices.add(device1);
+        devices.add(device2);
+
+        //DeviceDTO deviceDTO = new DeviceDTO();
+        List<DeviceDTO> deviceDTOs = new ArrayList<>();
+        deviceDTOs = deviceMapper.devicesToDeviceDTOs(devices);
+        return deviceDTOs.toString();
     }
 }

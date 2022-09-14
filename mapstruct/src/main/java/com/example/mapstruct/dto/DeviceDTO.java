@@ -3,7 +3,7 @@
  * <http://www.h3c.com/>
  * --------------------------------------------------------------------
  * Product      : NERV
- * Module Name  : Device
+ * Module Name  : DeviceDTO
  * Date Created : 2022-09-13
  * Creator      : w15021
  * Description  : xxx
@@ -16,7 +16,7 @@
  * --------------------------------------------------------------------
  */
 
-package com.example.mapstruct;
+package com.example.mapstruct.dto;
 
 import lombok.Data;
 
@@ -27,8 +27,7 @@ import lombok.Data;
  * @create: 2022-09-13
  **/
 @Data
-public class Device {
+public class DeviceDTO {
     private String id;
-    private String name;
-    private String type;
+    private String devName;
 }

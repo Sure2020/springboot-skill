@@ -3,7 +3,7 @@
  * <http://www.h3c.com/>
  * --------------------------------------------------------------------
  * Product      : NERV
- * Module Name  : DeviceMapper
+ * Module Name  : Device
  * Date Created : 2022-09-13
  * Creator      : w15021
  * Description  : xxx
@@ -16,11 +16,10 @@
  * --------------------------------------------------------------------
  */
 
-package com.example.mapstruct;
+package com.example.mapstruct.dto;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * @program: com.example.mapstruct
@@ -28,9 +27,10 @@ import org.mapstruct.factory.Mappers;
  * @author: w15021
  * @create: 2022-09-13
  **/
-@Mapper(componentModel = "spring")
-public interface DeviceMapper {
-    //DeviceMapper INSTANCE = Mappers.getMapper( DeviceMapper.class );
-    @Mapping(target = "devName", source = "name")
-    DeviceDTO deviceToDeviceDto(Device device);
+@Data
+@AllArgsConstructor
+public class Device {
+    private String id;
+    private String name;
+    private String type;
 }
