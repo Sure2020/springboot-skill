@@ -22,6 +22,7 @@ package com.example.testvalid.exception;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,9 +32,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @program: com.example.testvalid.exception
@@ -60,17 +64,46 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NullPointerException.class, RuntimeException.class, ClassCastException.class,
             IOException.class, IndexOutOfBoundsException.class, HttpRequestMethodNotSupportedException.class})
     public String handle(Exception ex) {
+        System.out.println("other");
         System.out.println(ex.getMessage());
         return ex.getMessage();
     }
-
-    @ExceptionHandler({MethodArgumentNotValidException.class,
-            MissingServletRequestParameterException.class})
-    public MyResponse handleValidated(Exception ex) {
-        System.out.println(ex.getMessage());
-
-        return new MyResponse(ex.getMessage(), -1);
+    // 接收get请求产生的validated异常
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Object testConstraintViolationException (ConstraintViolationException exception) {
+        System.out.println("ConstraintViolationException");
+        StringBuffer stringBuffer = new StringBuffer();
+        Set<ConstraintViolation<?>> violations = exception.getConstraintViolations();
+        for (ConstraintViolation<?> item : violations) {
+            stringBuffer.append(item.getMessage());
+        }
+        return stringBuffer.toString();
     }
+
+    // 接收post请求产生的validated异常
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public MyResponse handleValidated1(MethodArgumentNotValidException e) {
+        System.out.println("MethodArgumentNotValidException");
+        //System.out.println(e.getBindingResult().getFieldError().getDefaultMessage());
+
+        //return new MyResponse(e.getBindingResult().getFieldError().getDefaultMessage(), -1);
+        return new MyResponse(e.getBindingResult().getFieldError().getDefaultMessage(), -100);
+    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public MyResponse handleValidated2(MissingServletRequestParameterException e) {
+        System.out.println("MissingServletRequestParameterException");
+        //System.out.println(e.getBindingResult().getFieldError().getDefaultMessage());
+
+        //return new MyResponse(e.getBindingResult().getFieldError().getDefaultMessage(), -1);
+        return new MyResponse(e.getMessage(), -1);
+    }
+
+    /*@ExceptionHandler(BindException.class)
+    public Object exceptionHandler(BindException e)
+    {
+        e.printStackTrace();
+        return e.getBindingResult().getFieldError().getDefaultMessage();
+    }*/
 
 
 }

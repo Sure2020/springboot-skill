@@ -27,17 +27,22 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<dependency><!--https://itcn.blog/p/2535977682.html#1_25-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!--<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>2.0.1.Final</version>
-		</dependency>
+		</dependency>-->
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.0.13.Final</version>
-		</dependency>
+		</dependency>-->
 		<!--————————————————
 		版权声明：本文为CSDN博主「zyqok」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 		原文链接：https://blog.csdn.net/sunnyzyq/article/details/103527380-->

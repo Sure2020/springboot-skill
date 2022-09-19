@@ -18,6 +18,8 @@
 
 package com.example.testvalid.pojo;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -28,8 +30,10 @@ import javax.validation.constraints.NotNull;
  * @create: 2022-09-15
  **/
 public class User {
-    @NotNull(message = "not black")
+    @NotBlank(message = "not black")
     private String id;
+
+    private String name;
 
     public String getId() {
         return id;

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -40,14 +41,22 @@ import javax.validation.constraints.NotNull;
  * 参考链接：
  * 怎样用：https://www.jianshu.com/p/1dff31a1649d
  * 两者区别：https://blog.csdn.net/qq_27680317/article/details/79970590
+ *
+ * 比较全面的：
+ * https://www.cnblogs.com/mooba/p/11276062.html
+ * https://itcn.blog/p/2535977682.html#1_25
  */
 @RestController
-//@Validated
+@Validated
 public class TestValidController {
     @GetMapping("/valid/get")
-    public String testvalid (@RequestParam
-                                 @NotNull(message = "cat not be null")
-                                 /*@Valid*/ @Validated     String id
+    public String testvalid (@NotBlank(message = "cat not be black")
+                                 /*@NotNull(message = "cat not be null")
+                                 @NotEmpty(message = "cat not be empty")*/
+// 如果用RequestParam注解，当请求未携带id字段，则不会返回自定义校验信息，儿事返回系统提示：id未提供。这显然不是预期效果，所以平时别用这个注解好了
+                                 /*@RequestParam("id")*/
+                                    /*@RequestParam*/
+                                 /*@Valid*/ /*@Validated*/     String id
                              /*BindingResult bindingResult*/) {
         /*if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
