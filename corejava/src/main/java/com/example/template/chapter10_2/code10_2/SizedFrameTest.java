@@ -18,6 +18,7 @@
 
 package com.example.template.chapter10_2.code10_2;
 import java.awt.*;
+import java.net.URL;
 import javax.swing.*;
 /**
  * @program: com.example.template.chapter10_2.code10_2
@@ -25,7 +26,7 @@ import javax.swing.*;
  * @author: w15021
  * @create: 2022-11-03
  **/
-public class SizedFraineTest
+public class SizedFrameTest
 {
         public static void main(String[] args)
         {
@@ -51,7 +52,9 @@ public SizedFrame()
         setSize(screenWidth/2,screenHeight/2);
         setLocationByPlatform(true);
 // set frame icon
-        Image img=new ImageIcon("icon.gif").getImage();
+//        Image img=new ImageIcon("testicon.png").getImage();
+            Image img=new ImageIcon("src/main/resources/static/images/testicon.png").getImage();
+            //Image img=new ImageIcon("static/images/testicon.png").getImage();
         setIconImage(img);
         }
         }
