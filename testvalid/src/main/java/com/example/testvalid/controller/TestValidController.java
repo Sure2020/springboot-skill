@@ -18,6 +18,9 @@
 
 package com.example.testvalid.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONPObject;
+import com.example.testvalid.annotation.ApiCallLog;
 import com.example.testvalid.pojo.User;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -49,8 +52,9 @@ import javax.validation.constraints.NotNull;
 @RestController
 @Validated
 public class TestValidController {
+    //@ApiCallLog("valid_get")
     @GetMapping("/valid/get")
-    public String testvalid (@NotBlank(message = "cat not be black")
+    public JSONObject testvalid (@NotBlank(message = "cat not be black")
                                  /*@NotNull(message = "cat not be null")
                                  @NotEmpty(message = "cat not be empty")*/
 // 如果用RequestParam注解，当请求未携带id字段，则不会返回自定义校验信息，儿事返回系统提示：id未提供。这显然不是预期效果，所以平时别用这个注解好了
@@ -62,17 +66,24 @@ public class TestValidController {
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
             return bindingResult.getFieldError().getDefaultMessage();
         }*/
-        return id;
+        System.out.println(id);
+        JSONObject obj = new JSONObject();
+        obj.put("test","get");
+        return obj;
     }
 
+    //@ApiCallLog("valid_post")
     @PostMapping("/valid/post")
-    public String validPost (@RequestBody /*@Valid*/ @Validated User user
+    public JSONObject validPost (@RequestBody /*@Valid*/ @Validated User user
                              /*BindingResult bindingResult*/) {
         /*if(bindingResult.hasErrors()){
             System.out.println(bindingResult.getFieldError().getDefaultMessage());
             return bindingResult.getFieldError().getDefaultMessage();
         }*/
 
-        return user.getId();
+        System.out.println(user.getId());
+        JSONObject obj = new JSONObject();
+        obj.put("test","post");
+        return obj;
     }
 }
