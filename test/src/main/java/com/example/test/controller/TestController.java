@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TestController {
     private static JSONObject jsonObject = new JSONObject();
     static {
-        jsonObject.put("a","a");
+        jsonObject.put("wfs","wfs");
     }
     @GetMapping("/api/get")
     public String apiGet(HttpServletRequest request){
