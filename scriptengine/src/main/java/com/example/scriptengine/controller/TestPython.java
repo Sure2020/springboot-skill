@@ -22,6 +22,7 @@ import org.python.util.PythonInterpreter;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.net.URLEncoder;
 
 /**
  * @program: com.example.scriptengine.controller
@@ -31,6 +32,7 @@ import javax.script.ScriptEngineManager;
  **/
 public class TestPython {
     public static void main(String[] args) throws Exception {
+        URLEncoder.encode("a","b");
         // 创建 JavaScript 引擎
 //        ScriptEngineManager engineManager = new ScriptEngineManager();
 //        ScriptEngine engine = engineManager.getEngineByName("jython");//nashorn
