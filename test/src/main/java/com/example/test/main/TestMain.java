@@ -18,8 +18,11 @@
 
 package com.example.test.main;
 
+import com.example.test.util.UpperAppType;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 /**
  * @program: com.example.test.main
@@ -33,10 +36,19 @@ public class TestMain {
         /*urlReplaceHostAndPort("https://192.18.11.1:890/a/b/c",
                 "127.0.0.1",
                 8080);*/
-        MyMessage myMessage = new MyMessage();
+        /*MyMessage myMessage = new MyMessage();
         myMessage.setMsg("raw");
         testReturnString(myMessage);
-        System.out.println("at last: " + myMessage.toString());
+        System.out.println("at last: " + myMessage.toString());*/
+
+        //System.out.println(UpperAppType.valueOf("IOT_CLASS"));
+
+
+        String testStr = "a,bb.x.y";
+        System.out.println(testStr.split(",")[0]);
+        System.out.println(testStr.split(",")[1]);
+        System.out.println(Arrays.asList(testStr));
+
     }
     public static String urlReplaceHostAndPort(String urlForReplace, String hostToReplace, Integer portToReplace) {
         String finalURL = "";

@@ -19,6 +19,7 @@
 package com.example.test.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.test.config.ConfigurationPropertiesTest;
 import com.example.test.util.InfoSingleton;
 import com.example.test.util.TestAsync;
 import com.example.test.util.Tools;
@@ -55,6 +56,8 @@ import static com.example.test.util.Tools.mySleep;
 public class TestController {
     @Autowired
     private TestAsync testAsync;
+    @Autowired
+    ConfigurationPropertiesTest configurationPropertiesTest;
 
     private static JSONObject jsonObject = new JSONObject();
     private static JSONObject jsonObjectDali = new JSONObject();
@@ -134,5 +137,11 @@ public class TestController {
     public void testAsyncExtract() throws InterruptedException {
 
         testAsync.testLogAsync();
+    }
+
+    @GetMapping("/test/ConfigurationPropertiesTest")
+    public String testConfigurationPropertiesTest () {
+        log.info(configurationPropertiesTest.getA()+ configurationPropertiesTest.getB());
+        return "configurationPropertiesTest";
     }
 }
