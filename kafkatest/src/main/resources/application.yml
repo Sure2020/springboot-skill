@@ -1,21 +1,6 @@
 server:
   port: 8081
 iotdata.core:
-  async.executor.thread.core_pool_size: 10
-  async.executor.thread.max_pool_size: 25
-  async.executor.thread.queue_capacity: 10
-  enviromentUrl: 127.0.0.1
-  # 智能策略-kafka事件推送开关参数
-  zhinengcelue.kafka.switch: false
-  # 批量导入实体数据最大条数
-  excel_total_row_number: 1000
-  # 分布式锁的一些可调整项
-  distributedlock.keyprefix: lock_
-  distributedlock.expire: 5000
-  distributedlock.retrytimes: 6
-  distributedlock.sleepmills: 1000
-  #  默认模型id
-  defaultModId: 111
   queue:
     kafka:
       bootstrap.servers: "${ENV_PUB_KAFKA_HOST:192.168.110.244}:${ENV_PUB_KAFKA_PORT:9092}"
