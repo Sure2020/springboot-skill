@@ -21,6 +21,7 @@ package com.example.kafkatest.controller;
 import com.example.kafkatest.decode.DataDecodingEncodingService;
 import com.example.kafkatest.decode.DecodingEncodingService;
 import com.example.kafkatest.entity.Device;
+import com.example.kafkatest.entity.Peple;
 import com.example.kafkatest.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,11 +75,14 @@ public class TestController {
             System.out.println("no");
         }
 
+        // 测试解码时用父类声明对象，看能不能解码成功（实验证明，可以解码成功！！！）
+        Student student = new Student();
+        student.setName("xiaoming");
+        byte[] bytesStudent = decodingEncodingService.encode(student);
 
-
-        Optional<Student> deviceOptional_student = decodingEncodingService.decode(bytes);
+        Optional<Peple> deviceOptional_student = decodingEncodingService.decode(bytesStudent);
         if (deviceOptional_student.isPresent()) {
-            Student student = deviceOptional_student.get();
+            Peple studentDecode = deviceOptional_student.get();
             System.out.println(student.toString());
         } else {
             System.out.println("no student");
