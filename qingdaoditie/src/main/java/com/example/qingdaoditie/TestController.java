@@ -22,9 +22,11 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.RestTemplate;
+//import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +44,8 @@ import static com.example.qingdaoditie.ZTESignature.generateRequestSignature;
  **/
 @RestController
 public class TestController {
-    @Autowired
-    RestTemplate restTemplate;
+    /*@Autowired
+    RestTemplate restTemplate;*/
 
     public static void getResultOfQingdaoZhongxing(String url, String contentType,
                                                    String httpMethod, JSONObject requestObj,
@@ -73,5 +75,16 @@ public class TestController {
             System.out.println("getResultOfQingdaoZhongxing do not support {} method now");
         }
 
+    }
+    @PostMapping("/test/post")
+    public JSONObject testPost(@RequestBody Object requestObj){
+        System.out.println("***************post*************");
+        System.out.println(requestObj.toString());
+
+        JSONObject obj = new JSONObject();
+        obj.put("code", 200);
+        obj.put("message", "testing");
+        obj.put("data", "");
+        return obj;
     }
 }
