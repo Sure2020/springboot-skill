@@ -20,6 +20,7 @@ package com.example.test.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.test.config.ConfigurationPropertiesTest;
+import com.example.test.main.Testmember;
 import com.example.test.util.InfoSingleton;
 import com.example.test.util.TestAsync;
 import com.example.test.util.Tools;
@@ -38,6 +39,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +72,7 @@ public class TestController {
     private static JSONObject obj = new JSONObject();
     static {
         obj.put("code", 200);
-        obj.put("message", "test success");
+        obj.put("message", "testing");
         obj.put("data", "");
     }
     @PostMapping("/test/post")
@@ -143,5 +145,39 @@ public class TestController {
     public String testConfigurationPropertiesTest () {
         log.info(configurationPropertiesTest.getA()+ configurationPropertiesTest.getB());
         return "configurationPropertiesTest";
+    }
+
+    @GetMapping("/test/id/id2")
+    public String testidid2(){
+        Testmember t = new Testmember();
+        t.setId("a");
+        System.out.println(t.toString());
+        return t.toString();
+    }
+    @GetMapping("/test/restTemplate")
+    public String testRestTemplate(){
+        Testmember t = new Testmember();
+        t.setId("a");
+        Testmember t2 = new Testmember();
+        t2.setId("b");
+        List<Testmember> testmemberList = new ArrayList<>();
+        testmemberList.add(t);
+        testmemberList.add(t2);
+        String url = "http://localhost:18989/test/post";
+        sendRequest(url, testmemberList);
+        sendRequest(url, t);
+        sendRequest(url, obj);
+        System.out.println(t.toString());
+        return t.toString();
+    }
+
+    public <T> String sendRequest(String url, T body){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<T> entity = new HttpEntity<>(body, headers);
+        ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, entity, Object.class);
+        System.out.println(response);
+        return "testing";
     }
 }

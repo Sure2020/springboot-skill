@@ -18,11 +18,14 @@
 
 package com.example.test.main;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.test.util.UpperAppType;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @program: com.example.test.main
@@ -44,11 +47,28 @@ public class TestMain {
         //System.out.println(UpperAppType.valueOf("IOT_CLASS"));
 
 
-        String testStr = "a,bb.x.y";
-        System.out.println(testStr.split(",")[0]);
-        System.out.println(testStr.split(",")[1]);
-        System.out.println(Arrays.asList(testStr));
+        //String testStr = "ruleEngineToIotdata,tb_upper_app.notifications.iot-data";
 
+        /*String testStr = "ruleEngineToIotdata";
+        System.out.println(testStr.split(",")[0]);
+        //System.out.println(testStr.split(",")[1]);
+        List<String> testList = Arrays.asList(testStr);
+        System.out.println(testList.get(0));
+        System.out.println(Arrays.asList(testStr.split(",")));
+
+        System.out.println(System.currentTimeMillis());*/
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", "aa");
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(jsonObject);
+        System.out.println(jsonArray);
+
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("list", jsonArray);
+        System.out.println(jsonObject2);
+
+        List<Testmember> list = JSONObject.parseArray(jsonObject2.getString("list"), Testmember.class);
+        System.out.println(list.get(0).getId2());
     }
     public static String urlReplaceHostAndPort(String urlForReplace, String hostToReplace, Integer portToReplace) {
         String finalURL = "";
