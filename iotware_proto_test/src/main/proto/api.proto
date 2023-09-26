@@ -1,0 +1,101 @@
+//指定使用的protobuf语法是proto3，必须在第一行声明；默认使用proto2
+syntax = "proto3";
+//option java_package = "com.h3c.iot.gen.api";
+//生成Java文件后，文件第一行package的值
+option java_package = "com.example.prototest.iotwareproto";
+//生成Java文件的名称
+option java_outer_classname = "PlatApiProtos";
+//类似于Java包的概念，用于区分定义的proto类，防止重名
+package api;
+//可以引用其他文件
+import "queue.proto";
+//定义数据结构，类似于Java的Class
+message ToUpperAppTelemetryMsg {
+  //定义字段，支持多种数据类型，例如：string、int32、double、float等等
+  //字段后面的序号是标识号，用来在消息的二进制格式中识别各个字段，可以理解成字段的唯一ID
+  //一旦开始使用就不能够再改变，每个消息内唯一即可，不同的消息定义可以拥有相同的标识号
+  int64 entityIdMSB = 1;
+  int64 entityIdLSB = 2;
+  transport.PostTelemetryMsg postTelemetry = 3;
+}
+
+message RestApiRequestMsg {
+  int64 entityIdMSB = 1;
+  int64 entityIdLSB = 2;
+  HttpRequestMsg httpRequestMsg = 3;
+}
+
+message RestApiResponseMsg {
+  int64 entityIdMSB = 1;
+  int64 entityIdLSB = 2;
+  HttpResponseMsg  httpResponseMsg = 4;
+}
+
+message HttpRequestMsg {
+  string method = 1;
+  string url = 2;
+  repeated HttpHeader headers = 3;
+  bytes body = 4;
+  repeated Part parts = 5;
+}
+
+message Part {
+  string name = 1;
+  string filename = 2;
+  string contentType = 3;
+  bytes data = 4;
+}
+
+message HttpResponseMsg {
+  int32 statusCode = 1;
+  repeated HttpHeader headers = 3;
+  bytes body = 4;
+}
+
+message HttpHeader {
+  string name = 1;
+  string value = 2;
+}
+
+
+
+message ToUpperAppAttributeMsg {
+  int64 entityIdMSB = 1;
+  int64 entityIdLSB = 2;
+  transport.PostAttributeMsg postAttributes = 3;
+}
+
+message ToUpperAppMsg {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  int64 projectIdMSB = 6;
+  int64 projectIdLSB = 7;
+  string msg = 8;
+}
+
+enum DeviceState {
+  ONLINE = 0;
+  OFFLINE = 1;
+}
+
+message DeviceStateMsg {
+  int64 deviceIdMSB = 1;
+  int64 deviceIdLSB = 2;
+  DeviceState state = 3;
+}
+
+message ToUpperAppNotificationMsg {
+  transport.EntityUpdateMsg entityUpdateMsg = 1;
+  transport.EntityDeleteMsg entityDeleteMsg = 2;
+}
+
+message AppMsg {
+
+}
+
+message AppNotificationMsg {
+  string type = 1;
+}

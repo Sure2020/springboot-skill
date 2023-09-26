@@ -1,0 +1,1096 @@
+/**
+ * Copyright © 2016-2020 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+syntax = "proto3";
+package transport;
+
+//option java_package = "org.thingsboard.server.gen.transport";
+option java_package = "com.example.prototest.iotwareproto";
+option java_outer_classname = "TransportProtos";
+
+message QueueInfo {
+  string name = 1;
+  string topic = 2;
+  int32 partitions = 3;
+}
+
+/**
+ * Service Discovery Data Structures;
+ */
+message ServiceInfo {
+  string serviceId = 1;
+  repeated string serviceTypes = 2;
+  int64 tenantIdMSB = 3;
+  int64 tenantIdLSB = 4;
+  repeated QueueInfo ruleEngineQueues = 5;
+  repeated QueueInfo appQueues = 6;
+  repeated string appNames = 7;
+  repeated string hesNames = 8;
+  repeated QueueInfo hesQueues = 9;
+}
+
+/**
+ * Transport Service Data Structures;
+ */
+message SessionInfoProto {
+  string nodeId = 1;
+  int64 sessionIdMSB = 2;
+  int64 sessionIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  int64 deviceIdMSB = 6;
+  int64 deviceIdLSB = 7;
+  string deviceName = 8;
+  string deviceSN = 9;
+  string deviceType = 10;
+  int64 gwSessionIdMSB = 11;
+  int64 gwSessionIdLSB = 12;
+  int64 productTTL = 13;
+  int64 aliveInterval = 14;
+  int64 productIdMSB = 15;
+  int64 productIdLSB = 16;
+  bool debug = 17;
+  int64 integrationIdMSB = 18;
+  int64 integrationIdLSB = 19;
+  int64 deviceProfileIdMSB = 20;
+  int64 deviceProfileIdLSB = 21;
+  int64 customerIdMSB = 22;
+  int64 customerIdLSB = 23;
+  string productName = 24;
+  bool isH3CGateway = 25;
+}
+
+enum SessionEvent {
+  OPEN = 0;
+  CLOSED = 1;
+  BREAKDOWN = 2;
+  UNUSABLE = 3;
+}
+
+enum SessionType {
+  SYNC = 0;
+  ASYNC = 1;
+}
+
+enum KeyValueType {
+  BOOLEAN_V = 0;
+  LONG_V = 1;
+  DOUBLE_V = 2;
+  STRING_V = 3;
+  JSON_V = 4;
+}
+
+message KeyValueProto {
+  string key = 1;
+  KeyValueType type = 2;
+  bool bool_v = 3;
+  int64 long_v = 4;
+  double double_v = 5;
+  string string_v = 6;
+  string json_v = 7;
+}
+
+message TsKvProto {
+  int64 ts = 1;
+  KeyValueProto kv = 2;
+}
+
+message TsKvListProto {
+  int64 ts = 1;
+  repeated KeyValueProto kv = 2;
+}
+
+message DeviceInfoProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 deviceIdMSB = 3;
+  int64 deviceIdLSB = 4;
+  string deviceName = 5;
+  string deviceType = 6;
+  int64 productIdMSB = 8;
+  int64 productIdLSB = 9;
+  string additionalInfo = 10;
+  string deviceSN = 11;
+  int64 aliveInterval = 12;
+  bool debug = 13;
+  string dataType = 14;
+  int64 deviceProfileIdMSB = 15;
+  int64 deviceProfileIdLSB = 16;
+  string powerMode = 17;
+  int64 edrxCycle = 18;
+  int64 psmActivityTimer = 19;
+  int64 pagingTransmissionWindow = 20;
+  string productName = 21;
+}
+
+/**
+ * Transport Service Messages;
+ */
+message SessionEventMsg {
+  SessionType sessionType = 1;
+  SessionEvent event = 2;
+}
+
+message PostTelemetryMsg {
+  repeated TsKvListProto tsKvList = 1;
+}
+
+message PostTslEventMsg {
+  string tslEventId = 1;
+  int64 ts = 2;
+  repeated KeyValueProto kv = 3;
+}
+
+message PostAttributeMsg {
+  repeated KeyValueProto kv = 1;
+}
+
+message GetAttributeRequestMsg {
+  int32 requestId = 1;
+  repeated string clientAttributeNames = 2;
+  repeated string sharedAttributeNames = 3;
+  bool onlyShared = 4;
+}
+
+message GetAttributeResponseMsg {
+  int32 requestId = 1;
+  repeated TsKvProto clientAttributeList = 2;
+  repeated TsKvProto sharedAttributeList = 3;
+  repeated string deletedAttributeKeys = 4;
+  string error = 5;
+  bytes byteAttributeResponse = 6;
+  bool isBinaryDataType = 7;
+  bool sharedStateMsg = 8;
+  bool isMultipleAttributesRequest = 9;
+}
+
+message AttributeUpdateNotificationMsg {
+  int32 requestId = 1;
+  repeated TsKvProto sharedUpdated = 2;
+  repeated string sharedDeleted = 3;
+  string methodName = 4; /* 用来区分不同的下发配置, ig网关需要设置 */
+  bytes byteSharedUpdated = 5;
+  bool isBinaryDataType = 6;
+}
+
+message GetCodecRequestMsg {
+  int64 productIdMSB = 1;
+  int64 productIdLSB = 2;
+}
+
+message GetCodecResponseMsg {
+  int64 productIdMSB = 1;
+  int64 productIdLSB = 2;
+  string codecType = 3;
+  bytes encodePayload = 4;
+  bytes decodePayload = 5;
+}
+
+message ValidateDeviceTokenRequestMsg {
+  string token = 1;
+  string deviceSn = 2;
+  string productKey = 3;
+}
+
+message ValidateDispatchTokenRequestMsg {
+  string token = 1;
+  string type = 2;
+}
+
+message ValidateDeviceX509CertRequestMsg {
+  string hash = 1;
+  string deviceSn = 2;
+}
+
+message ValidateSubDeviceRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  string deviceSn = 3;
+  string productKey = 4;
+  int32 state = 5;
+  string lastRebootReason = 6;
+}
+
+message SubDeviceRegisterRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  string deviceInfoList = 3;
+}
+
+message SubDeviceRegisterResponseMsg {
+  int32 errorCode = 1;
+  string deviceInfoList = 2;
+}
+
+message SubDeviceDeleteRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  string deviceInfoList = 3;
+}
+
+message SubDeviceDeleteResponseMsg {
+  int32 errorCode = 1;
+  string deviceInfoList = 2;
+}
+
+message SubDeviceDisconnectRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  string deviceSn = 3;
+  string productKey = 4;
+  int32 state = 5;
+}
+
+message CredentialsDataProto {
+  ValidateDeviceTokenRequestMsg validateDeviceTokenRequestMsg = 1;
+  ValidateDeviceX509CertRequestMsg validateDeviceX509CertRequestMsg = 2;
+  ValidateBasicMqttCredRequestMsg validateBasicMqttCredRequestMsg = 3;
+}
+
+message ValidateBasicMqttCredRequestMsg {
+  string clientId = 1;
+  string userName = 2;
+  string password = 3;
+}
+
+message HesDeviceShadowRequestMsg {
+  string productKey = 1;
+  string deviceSn = 2;
+  string token = 3;
+  string requestType = 4;
+}
+
+message GetShadowResponseMsg{
+  string productKey = 1;
+  string deviceID = 2;
+  ShadowElementMsg state = 3;
+  ShadowElementMsg metadata = 4;
+  int64 version = 6;
+  string token = 7;
+}
+
+message ShadowElementMsg{
+  string desired = 1;
+  string reported = 2;
+}
+
+message ValidateHesShadowDeviceRequestMsg{
+  string productKey = 1;
+  string deviceSn = 2;
+  string token = 3;
+}
+
+message ValidateHesShadowDeviceResponseMsg{
+  DeviceInfoProto deviceInfo = 1;
+  int32 errorCode = 2;
+}
+
+message ValidateDeviceCredentialsResponseMsg {
+  DeviceInfoProto deviceInfo = 1;
+  string credentialsBody = 2;
+  bytes profileBody = 3;
+  bool isH3CGateway = 4;
+}
+
+message SubDeviceDisconnectResponseMsg {
+  DeviceInfoProto deviceInfo = 1;
+  int32 errorCode = 2;
+  bool isH3CGateway = 3;
+  string subDeviceSNList = 4;
+}
+
+message ValidateDispatchCredentialsResponseMsg {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 dispatchIdMSB = 3;
+  int64 dispatchIdLSB = 4;
+  string name = 5;
+  string type = 6;
+}
+
+message GetOrCreateDeviceFromGatewayRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  string deviceName = 3;
+  string deviceType = 4;
+  string deviceSN = 5;
+  string gatewaySN = 6;
+  bool isInnerGateway = 7;
+  T320GatewayDeviceMsg gatewayMsg = 8;
+}
+
+message GetSubDeviceFromGatewayRequestMsg {
+  int64 gatewayIdMSB = 1;
+  int64 gatewayIdLSB = 2;
+  int64 deviceIdMSB = 3;
+  int64 deviceIdLSB = 4;
+}
+
+message GetSubDeviceFromGatewayResponseMsg{
+  DeviceInfoProto deviceInfo = 1;
+}
+
+message GetOrCreateDeviceFromGatewayResponseMsg {
+  DeviceInfoProto deviceInfo = 1;
+  int32 errorCode = 2;
+}
+
+message ReportTGatewayAutoOnlineRequestMsg {
+  string deviceSN = 1;
+  string productKey = 2;
+  SessionEvent sessionEvent = 3;
+}
+
+message ReportTGatewayAutoOnlineResponseMsg {
+  bool isSuccess = 1;
+  string message = 2;
+}
+
+message GetTGatewayConnectionRequestMsg {
+  string deviceSN = 1;
+  string productKey = 2;
+  int32 devMsgId = 3;
+  bool isFirstConnected = 4;
+  string compatibilityVer = 5;
+}
+
+message GetTGatewayConnectionResponseMsg {
+  DeviceInfoProto deviceInfo = 1;
+  bool isNeedReboot = 2;
+}
+
+message GetAvtronsysCfgMsg {
+  int64 deviceIdMSB = 1;
+  int64 deviceIdLSB = 2;
+}
+
+message GetAvtronsysPanelMsg {
+  int64 deviceIdMSB = 1;
+  int64 deviceIdLSB = 2;
+}
+
+message GetAvtronsysPanelResponseMsg {
+  repeated AvtronsysPanelMsg panels = 1;
+}
+
+message GetAvtronsysCfgResponseMsg {
+  repeated AvtronsysCfgMsg cfgs = 1;
+}
+
+message AvtronsysCfgMsg {
+  int32 cmd = 1;
+  int64 deviceIdMSB = 2;
+  int64 deviceIdLSB = 3;
+  string abilityType = 4;
+  string eventId = 5;
+  string eventKey = 6;
+  string propertyKey = 7;
+  string propertyDataType = 8;
+}
+
+message AvtronsysPanelMsg {
+  string ip = 1;
+  int64 deviceIdMSB = 2;
+  int64 deviceIdLSB = 3;
+}
+
+message GetTenantRoutingInfoRequestMsg {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+}
+
+message GetTenantRoutingInfoResponseMsg {
+  bool isolatedTbCore = 1;
+  bool isolatedTbRuleEngine = 2;
+}
+enum ResponseStatus {
+  UNKNOWN = 0;
+  SUCCESS = 1;
+  NOT_FOUND = 2;
+  FAILURE = 3;
+}
+
+message GetOtaPackageRequestMsg {
+  int64 deviceIdMSB = 1;
+  int64 deviceIdLSB = 2;
+  int64 tenantIdMSB = 3;
+  int64 tenantIdLSB = 4;
+  string type = 5;
+}
+
+message GetOtaPackageResponseMsg {
+  ResponseStatus responseStatus = 1;
+  int64 otaPackageIdMSB = 2;
+  int64 otaPackageIdLSB = 3;
+  string type = 4;
+  string title = 5;
+  string version = 6;
+  string contentType = 7;
+  string fileName = 8;
+  int32 uploadType = 9;
+  string url = 10;
+  string filePath = 11;
+}
+
+message ToOtaPackageStateServiceMsg {
+  int64 ts = 1;
+  int64 tenantIdMSB = 2;
+  int64 tenantIdLSB = 3;
+  int64 deviceIdMSB = 4;
+  int64 deviceIdLSB = 5;
+  int64 otaPackageIdMSB = 6;
+  int64 otaPackageIdLSB = 7;
+  string type = 8;
+}
+
+message SessionCloseNotificationProto {
+  string message = 1;
+}
+
+message SubscribeToAttributeUpdatesMsg {
+  bool unsubscribe = 1;
+  SessionType sessionType = 2;
+}
+
+message SubscribeToRPCMsg {
+  bool unsubscribe = 1;
+  SessionType sessionType = 2;
+}
+
+message ToDeviceRpcRequestMsg {
+  int32 requestId = 1;
+  string methodName = 2;
+  string params = 3;
+  string hexString = 4;
+  bytes rpcByteData = 5;
+  string metadata = 6;
+  int64 expirationTime = 7;
+  int64 requestIdMSB = 8;
+  int64 requestIdLSB = 9;
+  bool oneway = 10;
+  bool persisted = 11;
+  bool isBinaryDataType = 12;
+}
+
+message ToDeviceRpcResponseMsg {
+  int32 requestId = 1;
+  string payload = 2;
+  string error = 3;
+}
+
+message ToServerRpcRequestMsg {
+  int32 requestId = 1;
+  string methodName = 2;
+  string params = 3;
+}
+
+message SubscribeToGatewayMsg {
+  //todo 订阅标志
+  bool flag = 1;
+}
+
+message GatewayConfigUpdateMsg{
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 deviceIdMSB = 3;
+  int64 deviceIdLSB = 4;
+  bool added = 5;
+  bool updated = 6;
+  bool deleted = 7;
+  bool bind = 8;
+  bool unbind = 9;
+}
+
+message ToTransportGatewayConfigMsg {
+  //todo
+  bytes config = 1;
+}
+
+message ToServerRpcResponseMsg {
+  int32 requestId = 1;
+  string payload = 2;
+  string error = 3;
+}
+
+message ClaimDeviceMsg {
+  int64 deviceIdMSB = 1;
+  int64 deviceIdLSB = 2;
+  string secretKey = 3;
+  int64 durationMs = 4;
+}
+
+message ToDispatchServerMsg {
+  int64 dispatchIdMSB = 1;
+  int64 dispatchIdLSB = 2;
+  DispatchType type = 3;
+  string payload = 4;
+}
+enum DispatchType {
+  DATA = 0;
+  EVENT = 1;
+  DISCONNECT = 2;
+}
+//Used to report session state to tb-Service and persist this state in the cache on the tb-Service level.
+message SubscriptionInfoProto {
+  int64 lastActivityTime = 1;
+  bool attributeSubscription = 2;
+  bool rpcSubscription = 3;
+}
+
+message SessionSubscriptionInfoProto {
+  SessionInfoProto sessionInfo = 1;
+  SubscriptionInfoProto subscriptionInfo = 2;
+}
+
+message DeviceSessionsCacheEntry {
+  repeated SessionSubscriptionInfoProto sessions = 1;
+}
+
+message TransportToDeviceActorMsg {
+  SessionInfoProto sessionInfo = 1;
+  SessionEventMsg sessionEvent = 2;
+  GetAttributeRequestMsg getAttributes = 3;
+  SubscribeToAttributeUpdatesMsg subscribeToAttributes = 4;
+  SubscribeToRPCMsg subscribeToRPC = 5;
+  ToDeviceRpcResponseMsg toDeviceRPCCallResponse = 6;
+  SubscriptionInfoProto subscriptionInfo = 7;
+  ClaimDeviceMsg claimDevice = 8;
+  SubscribeToGatewayMsg subscribeToGatewayMsg = 9;
+  TGatewayDeviceMsg TGatewayDeviceMsg = 10;
+  ToDeviceRpcResponseStatusMsg rpcResponseStatusMsg = 11;
+  SendPendingRPCMsg sendPendingRPC = 12;
+  HesGrpcUplinkProtoMsg hesGrpcUplinkMsg = 13;
+  HesGrpcDownlinkAckProtoMsg hesGrpcDownlinkAckMsg = 14;
+  bool fromAC = 15;
+}
+
+message HesGrpcUplinkProtoMsg {
+  bytes data = 1;
+}
+
+message HesGrpcDownlinkProtoMsg {
+  bytes data = 1;
+}
+
+message HesGrpcDownlinkAckProtoMsg {
+  bytes data = 1;
+}
+
+
+
+message ToDeviceRpcResponseStatusMsg {
+  int32 requestId = 1;
+  int64 requestIdMSB = 2;
+  int64 requestIdLSB = 3;
+  string status = 4;
+}
+
+message SendPendingRPCMsg {
+}
+
+message TGatewayDeviceMsg {
+  TGatewayStartSyncConfigMsg startSyncConfigMsg = 1;
+  TGatewaySyncConfigMsg syncConfigMsg = 2;
+  TGatewayReportConfigMsg reportConfigMsg = 3;
+  TGatewayStatusMsg statusMsg = 4;
+  TGatewayOTAMsg otaMsg = 5;
+}
+
+message TGatewayStartSyncConfigMsg {
+  bool isFirstConnected = 1;
+}
+
+enum TGatewayConfigType {
+  GW_CFG = 0;
+  NET_CFG = 1;
+  GROUP_CFG = 2;
+  MOD_CFG = 3;
+  NODE_CFG = 4;
+  LOG_CFG = 5;
+}
+
+message ToDeviceResponseMsg {
+  string payload = 1;
+}
+
+message ToDeviceNotifyMsg {
+  bool TGatewayDeviceJoin = 1;
+}
+
+
+message TGatewayOTAMsg {
+  string otaInform = 1;
+  string upGradeProgress = 2;
+  string nodeOrModUpGradeProgress = 3;
+}
+
+message TGatewayStatusMsg {
+  string upBasicInfo = 1;
+  string upNodeStatus = 2;
+  string upTopoInfo=3;
+}
+
+message TGatewaySyncConfigMsg {
+  TGatewayConfigType configType = 1;
+  string config = 2;
+}
+
+message TGatewayReportConfigMsg {
+  TGatewayConfigType configType = 1;
+  string config = 2;
+}
+
+message TransportToRuleEngineMsg {
+  SessionInfoProto sessionInfo = 1;
+  PostTelemetryMsg postTelemetry = 2;
+  PostAttributeMsg postAttributes = 3;
+  ToDeviceRpcResponseMsg toDeviceRPCCallResponse = 4;
+  ToServerRpcRequestMsg toServerRPCCallRequest = 5;
+}
+
+/**
+ * TB Core Data Structures
+ */
+
+message TbSubscriptionProto {
+  string serviceId = 1;
+  string sessionId = 2;
+  int32 subscriptionId = 3;
+  string entityType = 4;
+  int64 tenantIdMSB = 5;
+  int64 tenantIdLSB = 6;
+  int64 entityIdMSB = 7;
+  int64 entityIdLSB = 8;
+}
+
+message TbTimeSeriesSubscriptionProto {
+  TbSubscriptionProto sub = 1;
+  bool allKeys = 2;
+  repeated TbSubscriptionKetStateProto keyStates = 3;
+  int64 startTime = 4;
+  int64 endTime = 5;
+}
+
+message TbAttributeSubscriptionProto {
+  TbSubscriptionProto sub = 1;
+  bool allKeys = 2;
+  repeated TbSubscriptionKetStateProto keyStates = 3;
+  string scope = 4;
+}
+
+message TbSubscriptionUpdateProto {
+  string sessionId = 1;
+  int32 subscriptionId = 2;
+  int32 errorCode = 3;
+  string errorMsg = 4;
+  repeated TbSubscriptionUpdateValueListProto data = 5;
+}
+
+message TbAttributeUpdateProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  string scope = 6;
+  repeated TsKvProto data = 7;
+}
+
+message TbAttributeDeleteProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  string scope = 6;
+  repeated string keys = 7;
+}
+
+message TbTimeSeriesUpdateProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  repeated TsKvProto data = 6;
+}
+
+message TbAlarmSubscriptionProto {
+  TbSubscriptionProto sub = 1;
+  int64 ts = 2;
+}
+
+message TbAlarmUpdateProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  string alarm = 6;
+}
+
+message TbAlarmDeleteProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  string alarm = 6;
+}
+
+message TbSubscriptionCloseProto {
+  string sessionId = 1;
+  int32 subscriptionId = 2;
+}
+
+message TbSubscriptionKetStateProto {
+  string key = 1;
+  int64 ts = 2;
+}
+
+message TbSubscriptionUpdateValueListProto {
+  string key = 1;
+  repeated int64 ts = 2;
+  repeated string value = 3;
+  repeated TbSubscriptionUpdateTsValue tsValue = 4;
+}
+
+message TbSubscriptionUpdateTsValue {
+  int64 ts = 1;
+  string value = 2;
+}
+
+
+/**
+ * TB Core to TB Core messages
+ */
+
+message DeviceStateServiceMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 deviceIdMSB = 3;
+  int64 deviceIdLSB = 4;
+  bool added = 5;
+  bool updated = 6;
+  bool deleted = 7;
+}
+
+message SubscriptionMgrMsgProto {
+  TbTimeSeriesSubscriptionProto telemetrySub = 1;
+  TbAttributeSubscriptionProto attributeSub = 2;
+  TbSubscriptionCloseProto subClose = 3;
+  TbTimeSeriesUpdateProto tsUpdate = 4;
+  TbAttributeUpdateProto attrUpdate = 5;
+  TbAttributeDeleteProto attrDelete = 6;
+  TbAlarmSubscriptionProto alarmSub = 7;
+  TbAlarmUpdateProto alarmUpdate = 8;
+  TbAlarmDeleteProto alarmDelete = 9;
+  TbTimeSeriesDeleteProto tsDelete = 10;
+}
+
+message TbTimeSeriesDeleteProto {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+  int64 tenantIdMSB = 4;
+  int64 tenantIdLSB = 5;
+  repeated string keys = 6;
+}
+
+message LocalSubscriptionServiceMsgProto {
+  TbSubscriptionUpdateProto subUpdate = 1;
+  TbAlarmSubscriptionUpdateProto alarmSubUpdate = 2;
+}
+
+message TbAlarmSubscriptionUpdateProto {
+  string sessionId = 1;
+  int32 subscriptionId = 2;
+  int32 errorCode = 3;
+  string errorMsg = 4;
+  string alarm = 5;
+  bool deleted = 6;
+}
+
+message FromDeviceRPCResponseProto {
+  int64 requestIdMSB = 1;
+  int64 requestIdLSB = 2;
+  string response = 3;
+  int32 error = 4;
+}
+
+message EdgeNotificationMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 edgeIdMSB = 3;
+  int64 edgeIdLSB = 4;
+  string type = 5;
+  string action = 6;
+  int64 entityIdMSB = 7;
+  int64 entityIdLSB = 8;
+  string entityType = 9;
+  string body = 10;
+  PostTelemetryMsg postTelemetryMsg = 11;
+  PostAttributeMsg postAttributesMsg = 12;
+}
+
+message H3cGatewayNotificationMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  string eventType = 3;
+  string eventAction = 4;
+  int64 entityIdMSB = 5;
+  int64 entityIdLSB = 6;
+  string entityType = 7;
+  string entityBody = 8;
+  PostTelemetryMsg postTelemetryMsg = 9;
+  PostAttributeMsg postAttributesMsg = 10;
+}
+
+message CloudNotificationMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  string cloudEventType = 3;
+  string cloudEventAction = 4;
+  int64 entityIdMSB = 5;
+  int64 entityIdLSB = 6;
+  string entityType = 7;
+  string entityBody = 8;
+  PostTelemetryMsg postTelemetryMsg = 9;
+  PostAttributeMsg postAttributesMsg = 10;
+}
+
+/**
+ * Main messages;
+ */
+
+/* Request from Transport Service to ThingsBoard Core Service */
+message TransportApiRequestMsg {
+  ValidateDeviceTokenRequestMsg validateTokenRequestMsg = 1;
+  ValidateDeviceX509CertRequestMsg validateX509CertRequestMsg = 2;
+  GetOrCreateDeviceFromGatewayRequestMsg getOrCreateDeviceRequestMsg = 3;
+  GetTenantRoutingInfoRequestMsg getTenantRoutingInfoRequestMsg = 4;
+  ValidateDispatchTokenRequestMsg validateDispatchTokenRequestMsg = 5;
+  GetTGatewayConnectionRequestMsg getTGatewayConnectionRequestMsg = 6;
+  ReportTGatewayAutoOnlineRequestMsg reportTGatewayAutoOnlineRequestMsg = 7;
+  GetCodecRequestMsg getCodecRequestMsg = 8;
+  GetAvtronsysCfgMsg getAvtronsysCfgMsg = 9;
+  GetSubDeviceFromGatewayRequestMsg getSubDeviceRequestMsg = 10;
+  GetAvtronsysPanelMsg getAvtronsysPanelMsg = 11;
+  ValidateSubDeviceRequestMsg validateSubDeviceRequestMsg = 12;
+  GetOtaPackageRequestMsg otaPackageRequestMsg = 13;
+  ValidateBasicMqttCredRequestMsg validateBasicMqttCredRequestMsg = 14;
+  ValidateHesShadowDeviceRequestMsg validateHesShadowRequestMsg = 15;
+  HesDeviceShadowRequestMsg hesShadowRequestMsg = 16;
+  TbAttributeDeleteProto attributeDeleteMsg = 17;
+  TbAttributeUpdateProto attributeUpdateMsg = 18;
+  SubDeviceDisconnectRequestMsg subDeviceDisconnectRequestMsg = 19;
+  SubDeviceRegisterRequestMsg subDeviceRegisterRequestMsg = 20;
+  SubDeviceDeleteRequestMsg subDeviceDeleteRequestMsg = 21;
+}
+
+/* Response from ThingsBoard Core Service to Transport Service */
+message TransportApiResponseMsg {
+  ValidateDeviceCredentialsResponseMsg validateTokenResponseMsg = 1;
+  GetOrCreateDeviceFromGatewayResponseMsg getOrCreateDeviceResponseMsg = 2;
+  GetTenantRoutingInfoResponseMsg getTenantRoutingInfoResponseMsg = 4;
+  ValidateDispatchCredentialsResponseMsg validateDispatchCredentialsResponseMsg = 5;
+  GetTGatewayConnectionResponseMsg getTGatewayConnectionResponseMsg = 6;
+  ReportTGatewayAutoOnlineResponseMsg reportTGatewayAutoOnlineResponseMsg = 7;
+  GetCodecResponseMsg getCodecResponseMsg = 8;
+  GetAvtronsysCfgResponseMsg getAvtronsysCfgResponseMsg = 9;
+  GetSubDeviceFromGatewayResponseMsg getSubDeviceResponseMsg = 10;
+  GetAvtronsysPanelResponseMsg getAvtronsysPanelResponseMsg = 11;
+  GetOtaPackageResponseMsg otaPackageResponseMsg = 12;
+  ValidateHesShadowDeviceResponseMsg validateHesShadowMsg = 13;
+  GetShadowResponseMsg getShadowResponseMsg = 14;
+  SubDeviceDisconnectResponseMsg subDeviceDisconnectResponseMsg = 15;
+  SubDeviceRegisterResponseMsg subDeviceRegisterResponseMsg = 16;
+  SubDeviceDeleteResponseMsg subDeviceDeleteResponseMsg = 17;
+}
+
+/* Messages that are handled by ThingsBoard Core Service */
+message ToCoreMsg {
+  TransportToDeviceActorMsg toDeviceActorMsg = 1;
+  DeviceStateServiceMsgProto deviceStateServiceMsg = 2;
+  SubscriptionMgrMsgProto toSubscriptionMgrMsg = 3;
+  bytes toDeviceActorNotificationMsg = 4;
+  SchedulerServiceMsgProto schedulerServiceMsg = 5;
+  IntegrationDownlinkMsgProto integrationDownlinkMsg = 6;
+  GatewayConfigUpdateMsg gatewayConfigUpdateMsg = 7;
+  SubscribeToGatewayMsg subscribeToGatewayMsg = 8;
+  EdgeNotificationMsgProto edgeNotificationMsg = 9;
+  CloudNotificationMsgProto cloudNotificationMsg = 10;
+  H3cGatewayNotificationMsgProto h3cGatewayNotificationMsg = 11;
+}
+
+/* High priority messages with low latency are handled by ThingsBoard Core Service separately */
+message ToCoreNotificationMsg {
+  LocalSubscriptionServiceMsgProto toLocalSubscriptionServiceMsg = 1;
+  FromDeviceRPCResponseProto fromDeviceRpcResponse = 2;
+  bytes componentLifecycleMsg = 3;
+  IntegrationDownlinkMsgProto integrationDownlinkMsg = 4;
+  bytes edgeEventUpdateMsg = 5;
+}
+
+/* Messages that are handled by ThingsBoard RuleEngine Service */
+message ToRuleEngineMsg {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  bytes tbMsg = 3;
+  repeated string relationTypes = 4;
+  string failureMessage = 5;
+  ToRuleEngineDataSubscriptionMsg toRuleEngineDataSubscriptionMsg = 6;
+}
+
+message ToRuleEngineNotificationMsg {
+  bytes componentLifecycleMsg = 1;
+  FromDeviceRPCResponseProto fromDeviceRpcResponse = 2;
+  bytes relationLifecycleMsg = 3;
+}
+
+message ToRuleEngineDataSubscriptionMsg {
+  bytes dataSubscriptionMsg = 1;
+  DataSubscriptionByRuleNodeIdCloseProto dataSubscriptionByRuleNodeIdClose = 2;
+  DataSubscriptionByTsCloseProto dataSubscriptionByTsClose = 3;
+  TimeSeriesUpdateProto timeSeriesUpdate = 4;
+}
+
+message DataSubscriptionByRuleNodeIdCloseProto {
+  string tenantId = 1;
+  string ruleNodeId = 2;
+}
+
+message DataSubscriptionByTsCloseProto {
+  string tenantId = 1;
+  string deviceId = 2;
+  string ts = 3;
+  string ruleNodeId = 4;
+}
+
+message TimeSeriesUpdateProto {
+  string tenantId = 1;
+  string deviceId = 2;
+  repeated TsKvProto kv = 3;
+}
+
+message EntityUpdateMsg {
+  string entityType = 1;
+  bytes data = 2;
+}
+
+message EntityDeleteMsg {
+  string entityType = 1;
+  int64 entityIdMSB = 2;
+  int64 entityIdLSB = 3;
+}
+
+message ToTransportAvtronsysCfgUpdate {
+  int64 entityIdMSB = 1;
+  int64 entityIdLSB = 2;
+}
+
+/* Messages that are handled by ThingsBoard Transport Service */
+/* GatewayConfigUpdateMsg gatewayConfigUpdateMsg = 13;*/
+message ToTransportMsg {
+  int64 sessionIdMSB = 1;
+  int64 sessionIdLSB = 2;
+  SessionCloseNotificationProto sessionCloseNotification = 3;
+  GetAttributeResponseMsg getAttributesResponse = 4;
+  AttributeUpdateNotificationMsg attributeUpdateNotification = 5;
+  ToDeviceRpcRequestMsg toDeviceRequest = 6;
+  ToServerRpcResponseMsg toServerResponse = 7;
+  ToDeviceBytesMsg toDeviceBytesMsg = 8;
+  bool toTransportEventMsg = 9;
+  repeated ToTransportDeviceDelete toTransportDeviceDelete = 10;
+  /* For Tenant, TenantProfile and DeviceProfile */
+  EntityUpdateMsg entityUpdateMsg = 11;
+  EntityDeleteMsg entityDeleteMsg = 12;
+  ToTransportGatewayConfigMsg toTransportGatewayConfigMsg = 13;
+  ToDeviceResponseMsg toDeviceResponseMsg = 14;
+  HesGrpcDownlinkProtoMsg hesGrpcDownlinkMsg = 15;
+  ToTransportAvtronsysCfgUpdate toTransportAvtronsysCfgUpdate = 16;
+}
+
+message UsageStatsKVProto{
+  string key = 1;
+  int64 value = 2;
+}
+
+message ToUsageStatsServiceMsg {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 entityIdMSB = 3;
+  int64 entityIdLSB = 4;
+  repeated UsageStatsKVProto values = 5;
+  int64 customerIdMSB = 6;
+  int64 customerIdLSB = 7;
+  StatsType type = 8;
+}
+
+enum StatsType {
+  API_USAGE = 0;
+  DEVICE_USAGE = 1;
+  DISPATCH_USAGE = 2;
+}
+
+message ToTransportDeviceDelete {
+  string deviceSN = 1;
+}
+
+message ToDeviceBytesMsg{
+  bytes data = 1;
+}
+
+message ToCodecPluginMsg{
+  SessionInfoProto sessionInfo = 1;
+  UpLinkDevSnAndHexStringMsgProto hexStringMsg = 2;
+  UpLinkDevSnAndBytesMsgProto bytesMsg = 3;
+}
+
+message UpLinkDevSnAndHexStringMsgProto{
+  string deviceSn = 1;
+  string payload = 2;
+}
+
+message UpLinkDevSnAndBytesMsgProto{
+  string deviceSn = 1;
+  bytes payload = 2;
+  string metadata = 3;
+}
+
+message T320GatewayDeviceMsg {
+  string firstAddr = 1;
+  string secondAddr = 2;
+  string thirdAddr = 3;
+  string portID = 4;
+}
+
+message IntegrationDownlinkMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 integrationIdMSB = 3;
+  int64 integrationIdLSB = 4;
+  bytes data = 5;
+}
+
+message SchedulerServiceMsgProto {
+  int64 tenantIdMSB = 1;
+  int64 tenantIdLSB = 2;
+  int64 eventIdMSB = 3;
+  int64 eventIdLSB = 4;
+  bool added = 5;
+  bool updated = 6;
+  bool deleted = 7;
+}
