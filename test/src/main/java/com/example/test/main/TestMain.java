@@ -24,8 +24,11 @@ import com.example.test.util.UpperAppType;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @program: com.example.test.main
@@ -57,7 +60,11 @@ public class TestMain {
         System.out.println(Arrays.asList(testStr.split(",")));
 
         System.out.println(System.currentTimeMillis());*/
-        JSONObject jsonObject = new JSONObject();
+
+
+
+
+        /*JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", "aa");
         JSONArray jsonArray = new JSONArray();
         jsonArray.add(jsonObject);
@@ -68,7 +75,30 @@ public class TestMain {
         System.out.println(jsonObject2);
 
         List<Testmember> list = JSONObject.parseArray(jsonObject2.getString("list"), Testmember.class);
-        System.out.println(list.get(0).getId2());
+        System.out.println(list.get(0).getId2());*/
+
+        /*long linuxTimestamp = System.currentTimeMillis();//1629536400; // 你的Linux时间戳
+        //long linuxTimestamp = 1629536400; // 你的Linux时间戳
+
+        // 创建SimpleDateFormat对象，指定日期时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+
+        // 将Linux时间戳转换为Java的Date对象
+        Date date = new Date(linuxTimestamp); // 需要将时间戳乘以1000，因为Java中时间戳是以毫秒为单位的
+
+        // 格式化Date对象为字符串
+        String formattedDate = sdf.format(date);
+
+        System.out.println("Formatted date: " + formattedDate);*/
+
+        UUID uuid = UUID.randomUUID();
+
+        // 获取 UUID 的 16 位字符串表示
+        String uuidString = uuid.toString().replace("-", "").substring(0, 16);
+
+        System.out.println("16 位 UUID: " + uuidString);
+
+
     }
     public static String urlReplaceHostAndPort(String urlForReplace, String hostToReplace, Integer portToReplace) {
         String finalURL = "";
