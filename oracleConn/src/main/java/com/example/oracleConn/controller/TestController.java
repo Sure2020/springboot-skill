@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -141,6 +142,49 @@ public class TestController {
             } catch (SQLException e) {
                 log.info("conn 关闭异常");
             }
+        }
+    }
+
+    @PostMapping("/test/oracle/meta")
+    public void getOracleMetadata(@RequestBody OracleConn oracleConn){
+        // JDBC连接URL，根据你的Oracle数据库配置修改以下信息
+        /*String url = "jdbc:oracle:thin:@localhost:1521:ORCL"; // 主机:端口:SID
+        String username = "your_username";
+        String password = "your_password";
+        String table = "";*/
+        String url = oracleConn.getUrl();
+        String username = oracleConn.getUsername();
+        String password = oracleConn.getPassword();
+        String table = oracleConn.getTable();
+        //String column = oracleConn.getColumn();
+        System.out.println(oracleConn.toString());
+
+        try {
+            // 加载Oracle JDBC驱动程序
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+
+            // 建立数据库连接
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            DatabaseMetaData metaData = connection.getMetaData();
+
+            // 指定要获取结构信息的表名和模式（可以为null，表示使用默认模式）
+            String schema = null;
+
+            // 获取表的结构信息
+            ResultSet resultSet = metaData.getColumns(null, schema, table, null);
+
+            // 打印表的结构信息
+            while (resultSet.next()) {
+                String columnName = resultSet.getString("COLUMN_NAME");
+                String dataType = resultSet.getString("TYPE_NAME");
+                int columnSize = resultSet.getInt("COLUMN_SIZE");
+
+                System.out.println("Column Name: " + columnName + ", Data Type: " + dataType + ", Column Size: " + columnSize);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
