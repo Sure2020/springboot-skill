@@ -25,6 +25,8 @@ package com.example.template.controller;
  * @create: 2023-12-22
  **/
 
+import com.example.template.entity.PinboTrail;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
@@ -45,5 +47,11 @@ public class SecureController
         String userName = request.getAttribute("userName").toString();
         String password= request.getAttribute("password").toString();
         return "当前用户信息id=" + id + ",userName=" + userName+ ",password=" + password;
+    }
+
+    @GetMapping("/platform-boot/targetTrail/tagPlaybackList")
+    public Object pinbo(PinboTrail pinboTrail){
+        System.out.println(pinboTrail.toString());
+        return pinboTrail;
     }
 }
