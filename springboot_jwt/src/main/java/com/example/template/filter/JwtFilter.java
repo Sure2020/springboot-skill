@@ -39,7 +39,6 @@ import java.util.Map;
 /**
  * JWT过滤器，拦截 /secure的请求
  */
-@Configuration
 @WebFilter(filterName = "JwtFilter", urlPatterns = "/secure/*")
 public class JwtFilter implements Filter
 {
