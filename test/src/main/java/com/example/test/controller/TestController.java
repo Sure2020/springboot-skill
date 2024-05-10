@@ -18,6 +18,7 @@
 
 package com.example.test.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.test.config.ConfigurationPropertiesTest;
 import com.example.test.main.Testmember;
@@ -27,6 +28,7 @@ import com.example.test.util.Tools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.Resource;
@@ -55,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +78,8 @@ import static com.example.test.util.Tools.mySleep;
 @RestController
 @Slf4j
 public class TestController {
+    @Value("${random.on}")
+    private String randomOn;
     @Autowired
     private TestAsync testAsync;
     @Autowired
@@ -105,10 +110,16 @@ public class TestController {
         obj.put("data", jsonObject1);
     }
     @PostMapping("/test/post")
-    public JSONObject testPost(@RequestBody JSONObject requestObj){
+    public JSONObject testPost(@RequestBody JSONObject requestObj) throws InterruptedException {
         System.out.println("***************post*************");
         System.out.println(requestObj.toString());
-
+        System.out.println(randomOn);
+        if ("true".equals(randomOn)){
+            // Java
+            int randomIntBetween1000And2000 = (int) (Math.random() * (2001 - 1000)) + 1000;
+            System.out.println(randomIntBetween1000And2000);
+            Thread.sleep(randomIntBetween1000And2000);
+        }
         return obj;
     }
 
@@ -276,13 +287,33 @@ public class TestController {
         response.addHeader("a", "a");
         response.setHeader("Access-Control-Allow-Origin", "test");
         response.setHeader("Content-Type","text/plain");
-        StringBuilder sb = new StringBuilder();
+        /*StringBuilder sb = new StringBuilder();
         sb.append("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTg5NzEwMDgsInVzZXJuYW1lIjoiYWRtaW4ifQ.qZyW3ZDwDr7advbkB_6DzdW0BVlknAeebjocTayY5mA");
         JSONObject jsonObject = new JSONObject();
         for (int i = 1; i<count; i++){
             jsonObject.put(String.valueOf(i), sb);
+        }*/
+        JSONArray recordsList = new JSONArray();
+        for (int i=1;i<=count;i++){
+            recordsList.add(obj);
         }
-        return jsonObject;
+        JSONObject result = new JSONObject();
+        result.put("records", recordsList);
+
+        JSONObject ret = new JSONObject();
+        ret.put("result", result);
+        ret.put("success", true);
+        ret.put("message", "操作成功！");
+        ret.put("timestamp",System.currentTimeMillis());
+        return ret;
+    }
+
+    @GetMapping("/test/sd")
+    public JSONObject shanda(){
+        JSONObject shandaObj = new JSONObject();
+        shandaObj.put("xgh", "209900460064");
+        shandaObj.put("xm", "wfs");
+        return shandaObj;
     }
 
 }

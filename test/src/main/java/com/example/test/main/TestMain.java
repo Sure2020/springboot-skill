@@ -22,13 +22,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.test.util.UpperAppType;
 
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @program: com.example.test.main
@@ -97,6 +95,20 @@ public class TestMain {
         String uuidString = uuid.toString().replace("-", "").substring(0, 16);
 
         System.out.println("16 位 UUID: " + uuidString);
+
+        BigDecimal recommend1 = new BigDecimal("0.1");
+        BigDecimal recommend2 = BigDecimal.valueOf(0.1);
+        BigDecimal recommend3 = new BigDecimal(0.1);
+
+        System.out.println(Double.toString(0.1));
+        System.out.println(recommend1);
+        System.out.println(recommend2);
+        System.out.println(recommend3);
+        Set<Integer> myKeyset = new HashSet<>();
+        myKeyset.add(1);
+        System.out.println(myKeyset.contains(1));
+        int[] myIntArr = new int[] {1};
+
 
 
     }
