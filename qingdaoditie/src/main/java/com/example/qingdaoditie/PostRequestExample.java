@@ -25,6 +25,7 @@ package com.example.qingdaoditie;
  * @create: 2023-08-09
  **/
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,13 +45,17 @@ public class PostRequestExample {
         HttpEntity<Object> requestEntity = new HttpEntity<>(payload, headers);
 
         // Send the POST request
-        String url = "http://localhost:12345/test/post";
-        ResponseEntity<Object> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, Object.class);
+        String url = "http://localhost:12348/test/post";
+        ResponseEntity<JsonNode> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, JsonNode.class);
 
         // Handle the response
         if (response.getStatusCode() == HttpStatus.OK) {
-            Object responseBody = response.getBody();
-            System.out.println(responseBody);
+            JsonNode responseBody = response.getBody();
+            String responseBodyStr = responseBody.toString();
+            System.out.println(responseBodyStr);
+            JSONObject jsonObject = JSONObject.parseObject(responseBodyStr);
+            //JSONObject jsonObject = (JSONObject) JSONObject.toJSON(responseBody.toString());
+            System.out.println(jsonObject);
             // Process the response body
         } else {
             // Handle errors
