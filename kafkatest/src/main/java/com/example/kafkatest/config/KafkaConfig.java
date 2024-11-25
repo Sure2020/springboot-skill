@@ -42,7 +42,7 @@ import java.util.Properties;
 @Data
 @Component
 @Slf4j
-public class KafkaTemplate {
+public class KafkaConfig {
 
     @Value("${iotdata.core.queue.kafka.bootstrap.servers}")
     private String servers;
@@ -82,7 +82,7 @@ public class KafkaTemplate {
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
         this.consumer = new KafkaConsumer<String, String>(props);
         log.info("test topic: {}", topic);
-        String tempTopic = "ruleEngineToIotdata,tb_upper_app.notifications.iot-data";
+        String tempTopic = "topic1,a_dota_hero";
         this.consumer.subscribe(Arrays.asList(tempTopic.split(",")));
     }
 

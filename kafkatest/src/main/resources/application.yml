@@ -3,7 +3,7 @@ server:
 iotdata.core:
   queue:
     kafka:
-      bootstrap.servers: "${ENV_PUB_KAFKA_HOST:192.168.110.244}:${ENV_PUB_KAFKA_PORT:9092}"
+      bootstrap.servers: "${ENV_PUB_KAFKA_HOST:192.168.110.228}:${ENV_PUB_KAFKA_PORT:9093}"
       #      bootstrap.servers: "${ENV_PUB_KAFKA_HOST:localhost}:${ENV_PUB_KAFKA_PORT:9092}"
       topic: "${IOTDATA_CORE_QUEUE_KAFKA_TOPIC:ruleEngineToIotdata}"
       group_id: "${IOTDATA_CORE_QUEUE_KAFKA_GROUP_ID:iotdata}"
