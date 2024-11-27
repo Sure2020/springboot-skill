@@ -1,0 +1,16 @@
+psql中创建表
+CREATE TABLE student (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(30) NOT NULL,
+  age INT NOT NULL
+);
+
+COMMENT ON COLUMN student.id IS '唯一标识id';
+COMMENT ON COLUMN student.name IS '姓名';
+COMMENT ON COLUMN student.age IS '年龄';
+
+-- 设置自增 ID 的起始值
+ALTER SEQUENCE student_id_seq RESTART WITH 2;
+
+psql中插入数据
+insert into student(id,name,age) VALUES(2,'note',22);
