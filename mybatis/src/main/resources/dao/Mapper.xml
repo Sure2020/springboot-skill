@@ -18,6 +18,14 @@
         where id = #{id}
     </select>
 
+    <select id="batch" resultMap="StudentMap">
+        SELECT * FROM student
+        WHERE id IN
+        <foreach item="id" index="index" collection="ids" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="StudentMap">
         select

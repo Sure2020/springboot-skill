@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * https://javabetter.cn/springboot/mybatis.html#%E6%95%B4%E5%90%88-mybatis
  *
+ * 分页：
+ * https://cloud.tencent.com/developer/article/1669256
+ * https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md
  */
 @SpringBootApplication
 public class TemplateApplication {

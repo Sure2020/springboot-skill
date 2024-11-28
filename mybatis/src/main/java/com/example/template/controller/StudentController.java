@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * (Student)表控制层
@@ -39,7 +41,7 @@ import javax.annotation.Resource;
  * @since 2020-04-14 11:39:20
  */
 @RestController
-@RequestMapping("student")
+@RequestMapping("t")
 public class StudentController {
     /**
      * 服务对象
@@ -63,5 +65,19 @@ public class StudentController {
     public Student selectOneAnno(Integer id) {
         return this.studentService2.queryByIdAnno(id);
     }
+    @GetMapping("batch")
+    public List<Student> batch(@RequestParam("ids") List<Integer> ids) {
+        System.out.println(ids.toArray());
+        System.out.println(ids);
+        return this.studentService2.batch(ids);
+    }
 
+    @GetMapping("age")
+    public List<Student> queryByAge(@RequestParam("age") Integer age) {
+        return this.studentService2.queryByAge(age);
+    }
+    @GetMapping("page")
+    public List<Student> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        return this.studentService2.page(pageNum, pageSize);
+    }
 }

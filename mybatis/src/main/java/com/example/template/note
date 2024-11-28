@@ -13,4 +13,4 @@ COMMENT ON COLUMN student.age IS '年龄';
 ALTER SEQUENCE student_id_seq RESTART WITH 2;
 
 psql中插入数据
-insert into student(id,name,age) VALUES(2,'note',22);
+insert into student(id,name,age) VALUES(1,'note',22);

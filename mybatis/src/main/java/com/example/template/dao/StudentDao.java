@@ -54,6 +54,15 @@ public interface StudentDao {
     @Select("select * from student where id = #{id}")
     Student queryByIdAnnotation(Integer id);
 
+    //这里不加@Param("ids")注解的话，实测默认会传入名为list的参数名，而不是ids的参数名
+    List<Student> batch(@Param("ids") List<Integer> ids);
+
+    @Select("select * from student where age = #{age}")
+    List<Student> queryByAge(@Param("age") Integer age);
+
+    @Select("select * from student")
+    List<Student> page();
+
     /**
      * 查询指定行数据
      *
@@ -70,7 +79,7 @@ public interface StudentDao {
      * @param student 实例对象
      * @return 对象列表
      */
-    List<Student> queryAll(Student student);
+    List<Student> page(Student student);
 
     /**
      * 新增数据

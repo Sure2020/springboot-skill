@@ -27,11 +27,10 @@ package com.example.template.service;
 
 import com.example.template.dao.StudentDao;
 import com.example.template.entity.Student;
-import org.apache.ibatis.annotations.Select;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -40,7 +39,7 @@ import java.util.List;
  * @author 全栈学习笔记
  * @since 2020-04-14 11:39:19
  */
-@Service//("studentervice")
+@Service//("studentervice")  该注解加到实现类上而不是接口上，因为spring需要实例化bean,而接口无法被实例化
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
@@ -72,6 +71,23 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> queryAllByLimit(int offset, int limit) {
         return this.studentDao.queryAllByLimit(offset, limit);
+    }
+
+    @Override
+    public List<Student> batch(List<Integer> ids) {
+        System.out.println("#############" + ids.toArray());
+        return this.studentDao.batch(ids);
+    }
+
+    @Override
+    public List<Student> queryByAge(Integer age) {
+        return studentDao.queryByAge(age);
+    }
+    @Override
+    public List<Student> page(Integer pageNum, Integer pageSize){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Student> studentList = studentDao.page();
+        return studentList;
     }
 
     /**

@@ -36,7 +36,6 @@ import java.util.List;
  * @author 全栈学习笔记
  * @since 2020-04-14 11:39:19
  */
-//@Service
 public interface StudentService {
 
     /**
@@ -56,7 +55,10 @@ public interface StudentService {
      * @return 对象列表
      */
     List<Student> queryAllByLimit(int offset, int limit);
+    List<Student> batch(List<Integer> ids);
 
+    List<Student> queryByAge(Integer age);
+    List<Student> page(Integer pageNum, Integer pageSize);
     /**
      * 新增数据
      *
