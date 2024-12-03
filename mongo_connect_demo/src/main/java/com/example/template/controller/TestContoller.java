@@ -26,6 +26,7 @@ package com.example.template.controller;
  **/
 
 import com.example.template.entity.Passenger;
+import com.example.template.repository.PassengerRepository;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,6 +46,8 @@ public class TestContoller {
 
     @Autowired
     MongoTemplate mongoTemplate;
+    @Autowired
+    PassengerRepository passengerRepository;
 
 
 
@@ -72,6 +76,30 @@ public class TestContoller {
         Query query = Query.query(Criteria.where("name").is("hello").and("password").is("world1"));
         List<Passenger> passengers = mongoTemplate.find(query, Passenger.class);
         return passengers.size() + "";
+    }
+
+    @RequestMapping("/query/repo/all")
+    public String queryRepo() {
+        List<Passenger> passengers = passengerRepository.findAll();
+        System.out.println(passengers.get(0));
+        return "" + passengers.size();
+    }
+
+    @RequestMapping("/query/repo/one/{name}")
+    public String queryRepoOne(@PathVariable("name") String name) {
+        List<Passenger> passengers = passengerRepository.findByName(name);
+        System.out.println(passengers.get(0));
+        return "" + passengers.size();
+    }
+
+    @RequestMapping("/query/repo/count/{name}")
+    public Integer queryRepoCount(@PathVariable("name") String name) {
+        return passengerRepository.countByName(name);
+    }
+
+    @RequestMapping("/query/repo/count")
+    public Long count() {
+        return passengerRepository.count();
     }
 
 
