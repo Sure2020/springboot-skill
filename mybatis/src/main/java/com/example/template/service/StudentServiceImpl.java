@@ -28,6 +28,7 @@ package com.example.template.service;
 import com.example.template.dao.StudentDao;
 import com.example.template.entity.Student;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +88,9 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> page(Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum, pageSize);
         List<Student> studentList = studentDao.page();
+        PageInfo pageInfo = new PageInfo(studentList);
+        System.out.println("pages: " + pageInfo.getPages());
+        System.out.println("total: " + pageInfo.getTotal());
         return studentList;
     }
 

@@ -55,17 +55,19 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
-<!--		<dependency>-->
-<!--			<groupId>com.github.pagehelper</groupId>-->
-<!--			<artifactId>pagehelper-spring-boot-starter</artifactId>-->
-<!--			<version>2.1.0</version>-->
-<!--		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
 		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+<!--		https://blog.csdn.net/amosjob/article/details/117250315
+不能直接引入pagehelper，因为这样会导致分页插件不起作用，要引入starter。除非在mybatisConfig.xml文件中再加入配置-->
+		<!--<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper</artifactId>
 			<version>6.1.0</version>
-		</dependency>
+		</dependency>-->
 
 
 
