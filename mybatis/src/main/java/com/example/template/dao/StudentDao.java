@@ -25,6 +25,7 @@ package com.example.template.dao;
  * @create: 2024-11-25
  **/
 
+import com.example.template.entity.PartOfStudent;
 import com.example.template.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -49,6 +50,11 @@ public interface StudentDao {
      * @return 实例对象
      */
     Student queryById(Integer id);
+    @Select("select count(*) from student")
+    Integer count();
+
+    @Select("select id,age from student where id = #{id}")
+    PartOfStudent queryPartOfStudent(Integer id);
 
     //注解方式
     @Select("select * from student where id = #{id}")

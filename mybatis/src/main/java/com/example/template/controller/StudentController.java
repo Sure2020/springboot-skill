@@ -25,6 +25,8 @@ package com.example.template.controller;
  * @create: 2024-11-26
  **/
 
+import com.example.template.dao.StudentDao;
+import com.example.template.entity.PartOfStudent;
 import com.example.template.entity.Student;
 import com.example.template.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,7 @@ import java.util.List;
  * @since 2020-04-14 11:39:20
  */
 @RestController
-@RequestMapping("t")
+@RequestMapping()
 public class StudentController {
     /**
      * 服务对象
@@ -49,6 +51,8 @@ public class StudentController {
 //    @Resource
     @Autowired
     private StudentService studentService2;
+    @Autowired
+    private StudentDao studentDao;
 
     /**
      * 通过主键查询单条数据
@@ -80,4 +84,17 @@ public class StudentController {
     public List<Student> page(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
         return this.studentService2.page(pageNum, pageSize);
     }
+    @GetMapping("count")
+    public Integer count(){
+        return studentDao.count();
+    }
+
+    @GetMapping("/student/part")
+    public PartOfStudent queryPartOfStudent(@RequestParam("id") Integer id){
+        PartOfStudent partOfStudent = studentDao.queryPartOfStudent(id);
+        partOfStudent.setSex("男");
+        return partOfStudent;
+    }
+
+
 }
