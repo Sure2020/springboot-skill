@@ -76,6 +76,13 @@ public class StudentController {
         return this.studentService2.batch(ids);
     }
 
+    @GetMapping("batch/with/any")
+    public List<Student> batchWithAny(@RequestParam("ids") List<Integer> ids) {
+        System.out.println(ids.toArray());
+        System.out.println(ids);
+        return this.studentDao.getStudentsByIds(ids);
+    }
+
     @GetMapping("age")
     public List<Student> queryByAge(@RequestParam("age") Integer age) {
         return this.studentService2.queryByAge(age);

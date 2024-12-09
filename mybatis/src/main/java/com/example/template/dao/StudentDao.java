@@ -63,6 +63,14 @@ public interface StudentDao {
     //这里不加@Param("ids")注解的话，实测默认会传入名为list的参数名，而不是ids的参数名
     List<Student> batch(@Param("ids") List<Integer> ids);
 
+    List<Student> batch_with_any(@Param("ids") List<Integer> ids);
+
+    //测了也不行 ANY语法，但是数据库后台可以：select * from student where id =ANY(ARRAY[1,2]);
+    //知道原因了，ARRAY[#{ids}]::varchar[] 语法是 PostgreSQL 专用的，mysqsl不行
+    @Select("SELECT * FROM student WHERE id = ANY(ARRAY[#{ids}]::varchar[])")
+    List<Student> getStudentsByIds(@Param("ids") List<Integer> ids);
+
+
     @Select("select * from student where age = #{age}")
     List<Student> queryByAge(@Param("age") Integer age);
 

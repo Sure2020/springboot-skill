@@ -26,6 +26,11 @@
         </foreach>
     </select>
 
+<!--    测了不行-->
+    <select id="batch_with_any" resultMap="StudentMap">
+        SELECT * FROM student WHERE id = ANY(#{ids})
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="StudentMap">
         select
