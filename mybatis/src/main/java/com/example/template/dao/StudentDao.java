@@ -74,7 +74,7 @@ public interface StudentDao {
     @Select("select * from student where age = #{age}")
     List<Student> queryByAge(@Param("age") Integer age);
 
-    @Select("select * from student")
+    @Select("select * from studentTest")
     List<Student> page();
 
     /**
