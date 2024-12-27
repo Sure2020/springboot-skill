@@ -26,7 +26,9 @@ package com.example.template.controller;
  **/
 
 import com.example.template.entity.Passenger;
+import com.example.template.entity.Table1;
 import com.example.template.repository.PassengerRepository;
+import com.example.template.repository.Table1Repository;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,5 +122,35 @@ public class TestContoller {
         DeleteResult remove = mongoTemplate.remove(query, Passenger.class);
         return "success";
     }
+
+    @GetMapping("/table1/1")
+    public String table1_1(){
+        //Table1 table1 = mongoTemplate.findById("a", Table1.class);
+        List<Table1> table1List = mongoTemplate.findAll(Table1.class);
+        System.out.println(table1List.size());
+        System.out.println(table1List.get(0));
+        System.out.println(table1List.get(0).toString());
+        System.out.println("testing");
+        return "testing";
+    }
+
+    @GetMapping("/table1/2")
+    public String table1_2(){
+        Table1 table1 = mongoTemplate.findById("676e5826760116692abd0060", Table1.class);
+        System.out.println(table1.toString());
+        System.out.println("testing");
+        return "testing";
+    }
+    @Autowired
+    Table1Repository table1Repository;
+    @GetMapping("/table1/3")
+    public String table1_3(){
+//        Table1 table1 = mongoTemplate.findById("676e5826760116692abd0060", Table1.class);
+        Table1 table1 = table1Repository.findByName("b");
+        System.out.println(table1.toString());
+        System.out.println("testing");
+        return "testing";
+    }
+
 
 }
