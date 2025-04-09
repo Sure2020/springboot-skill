@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.template.TestEnum.ONLINE;
+
 /**
  * @program: com.example.template.controller
  * @description: xxx
@@ -120,5 +122,11 @@ public class TestController {
 
 
         return "testn";
+    }
+    @GetMapping("enum")
+    public String testenum(){
+        System.out.println(ONLINE);
+        System.out.println(ONLINE.getStatus());
+        return "testing";
     }
 }

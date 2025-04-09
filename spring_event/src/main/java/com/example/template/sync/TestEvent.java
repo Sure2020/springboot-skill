@@ -3,8 +3,8 @@
  * <http://www.h3c.com/>
  * --------------------------------------------------------------------
  * Product      : NERV
- * Module Name  : MyCustomEvent
- * Date Created : 2024-11-25
+ * Module Name  : TestEvent
+ * Date Created : 2024-12-14
  * Creator      : w15021
  * Description  : xxx
  *
@@ -12,37 +12,33 @@
  * Modification History
  * DATE             NAME                DESCRIPTION
  * --------------------------------------------------------------------
- * 2024-11-25       w15021     xxx
+ * 2024-12-14       w15021     xxx
  * --------------------------------------------------------------------
  */
 
 package com.example.template.sync;
 
+import lombok.Data;
 import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-import java.time.Clock;
+import lombok.Setter;
 
 /**
- * @program: com.example.template
+ * @program: com.example.template.sync
  * @description: xxx
  * @author: w15021
- * @create: 2024-11-25
+ * @create: 2024-12-14
  **/
 @Getter
-public class MyCustomEvent extends ApplicationEvent {
+@Setter
+public class TestEvent extends MyCustomEvent {
+    private TestObject data;
 
-    private String message;
-    private Object data;
-
-
-    public MyCustomEvent(Object source) {
+    public TestEvent(Object source) {
         super(source);
     }
 
-    public MyCustomEvent(Object source, String msg, Object data) {
-        super(source);
-        this.message = msg;
-        this.data = data;
+    public TestEvent(Object source, String msg, TestObject data) {
+        super(source, msg, data);
     }
+
 }

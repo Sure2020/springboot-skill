@@ -35,7 +35,7 @@ public class EventPublisher {
     private ApplicationEventPublisher applicationEventPublisher;
 
     public void publishEvent(String message) {
-        MyCustomEvent myCustomEvent = new MyCustomEvent(this, message);
+        MyCustomEvent myCustomEvent = new MyCustomEvent(this);
         System.out.println("Event published: " + message);
         applicationEventPublisher.publishEvent(myCustomEvent);
     }

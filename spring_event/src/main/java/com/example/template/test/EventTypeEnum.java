@@ -24,7 +24,7 @@ package com.example.template.test;
  * @author: w15021
  * @create: 2024-12-13
  **/
-public enum EventType {
+public enum EventTypeEnum {
     // 根级事件
     DEVICE_EVENT("1", "设备事件"),
 
@@ -48,14 +48,14 @@ public enum EventType {
     private final String description;
 
     // 根级事件的构造函数
-    EventType(String code, String description) {
+    EventTypeEnum(String code, String description) {
         this.parentCode = ""; // 根级事件没有父级编码
         this.code = code;
         this.description = description;
     }
 
     // 子级、孙级、重孙级事件的构造函数
-    EventType(EventType parent, String subCode, String description) {
+    EventTypeEnum(EventTypeEnum parent, String subCode, String description) {
         System.out.println(parent);
         this.parentCode = parent.code;  // 继承父类的编码
         this.code = parent.code + subCode;               // 子类特有的编码
@@ -75,7 +75,7 @@ public enum EventType {
 
     // 测试输出所有事件
     public static void main(String[] args) {
-        for (EventType event : EventType.values()) {
+        for (EventTypeEnum event : EventTypeEnum.values()) {
             System.out.println("事件代码: " + event.getEventCode() + ", 描述: " + event.getDescription());
         }
         //System.out.println(DEVICE_POWER_FAILURE.getEventCode());

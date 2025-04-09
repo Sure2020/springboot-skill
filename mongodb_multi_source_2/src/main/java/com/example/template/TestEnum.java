@@ -3,8 +3,8 @@
  * <http://www.h3c.com/>
  * --------------------------------------------------------------------
  * Product      : NERV
- * Module Name  : MyCustomEvent
- * Date Created : 2024-11-25
+ * Module Name  : TestEnum
+ * Date Created : 2024-12-27
  * Creator      : w15021
  * Description  : xxx
  *
@@ -12,37 +12,39 @@
  * Modification History
  * DATE             NAME                DESCRIPTION
  * --------------------------------------------------------------------
- * 2024-11-25       w15021     xxx
+ * 2024-12-27       w15021     xxx
  * --------------------------------------------------------------------
  */
 
-package com.example.template.sync;
+package com.example.template;
 
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
-
-import java.time.Clock;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @program: com.example.template
  * @description: xxx
  * @author: w15021
- * @create: 2024-11-25
+ * @create: 2024-12-27
  **/
-@Getter
-public class MyCustomEvent extends ApplicationEvent {
-
-    private String message;
-    private Object data;
+public enum TestEnum {
+    ONLINE(1);
+    private Integer status;
 
 
-    public MyCustomEvent(Object source) {
-        super(source);
+    TestEnum(Integer status) {
+        this.status = status;
     }
 
-    public MyCustomEvent(Object source, String msg, Object data) {
-        super(source);
-        this.message = msg;
-        this.data = data;
+    TestEnum() {
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

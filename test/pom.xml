@@ -64,6 +64,12 @@
 <!--			<version></version>-->
 		</dependency>
 
+		<dependency>
+			<groupId>org.ejml</groupId>
+			<artifactId>ejml-simple</artifactId>
+			<version>0.43</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

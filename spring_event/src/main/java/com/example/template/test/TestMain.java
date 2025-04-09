@@ -19,11 +19,15 @@
 package com.example.template.test;
 
 
+import com.example.template.sync.TestEvent;
+import com.example.template.sync.TestObject;
+
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @program: com.example.template.test
@@ -59,6 +63,13 @@ public class TestMain {
         System.out.println(date.getTime());
         Date date2 = new Date();
         System.out.println(date2.getTime());
+
+        for(TestEnum testEnum: TestEnum.values()){
+            System.out.println(testEnum);
+            System.out.println(testEnum.getName());
+        }
+
+        System.out.println(UUID.randomUUID().toString());
 
     }
 }
