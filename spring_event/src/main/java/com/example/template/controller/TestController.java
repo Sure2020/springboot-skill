@@ -18,10 +18,12 @@
 
 package com.example.template.controller;
 
+import com.example.template.sync.EventPublisher;
 import com.example.template.sync.MyCustomEvent;
 import com.example.template.sync.TestEvent;
 import com.example.template.sync.TestObject;
 import com.example.template.test.TestEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,8 @@ import java.util.UUID;
  **/
 @RestController
 public class TestController {
+    @Autowired
+    EventPublisher eventPublisher;
     @GetMapping("test")
     public String test(){
         TestObject testObject = new TestObject();
@@ -46,6 +50,8 @@ public class TestController {
         TestEvent testEvent1 = (TestEvent) myCustomEvent;
         System.out.println(myCustomEvent.getData());
         System.out.println(testEvent1.getData().getId());
+
+        eventPublisher.publishEvent("wfs");
         return "testing";
     }
 }
